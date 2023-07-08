@@ -17,5 +17,8 @@ module.exports = {
   env: { node: true },
   parserOptions: {
     ecmaVersion: 'latest'
+  },
+  rules: {
+    'vue/multi-word-component-names': 'off'
   }
 }

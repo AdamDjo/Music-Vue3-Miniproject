@@ -1,6 +1,6 @@
 <template>
   <!-- Header -->
-  <Header></Header>
+  <app-header />
 
   <!-- Introduction -->
   <Intro></Intro>
@@ -14,7 +14,7 @@
   <Auth></Auth>
 </template>
 <script>
-import Header from './components/Header.vue'
+import AppHeader from './components/Header.vue'
 import Auth from './components/Auth.vue'
 import Player from './components/Player.vue'
 import Artistes from './components/Artistes.vue'
@@ -22,7 +22,7 @@ import Intro from './components/Intro.vue'
 export default {
   name: 'App',
   components: {
-    Header,
+    AppHeader,
     Auth,
     Player,
     Artistes,

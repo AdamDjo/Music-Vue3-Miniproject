@@ -10,6 +10,7 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(Veevalidate)
+
 //app.use(router)
 
 app.mount('#app')

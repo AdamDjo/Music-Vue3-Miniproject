@@ -19,6 +19,9 @@ import Auth from './components/Auth.vue'
 import Player from './components/Player.vue'
 import Artistes from './components/Artistes.vue'
 import Intro from './components/Intro.vue'
+import { mapWritableState } from 'pinia'
+import { useUserStore } from '@/stores/user'
+import { auth } from './plugins/firebase/firebase'
 export default {
   name: 'App',
   components: {
@@ -27,6 +30,14 @@ export default {
     Player,
     Artistes,
     Intro
+  },
+  computed: {
+    ...mapWritableState(useUserStore, ['userLoggedIn'])
+  },
+  created() {
+    if (auth.currentUser) {
+      this.userLoggedIn = true
+    }
   }
 }
 </script>

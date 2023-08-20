@@ -1,13 +1,7 @@
 <template>
   <!-- Header -->
   <app-header />
-
-  <!-- Introduction -->
-  <Intro></Intro>
-
-  <!-- Main Content -->
-  <Artistes></Artistes>
-
+  <router-view></router-view>
   <!-- Player -->
   <Player></Player>
   <!-- Auth Modal -->
@@ -17,8 +11,7 @@
 import AppHeader from './components/Header.vue'
 import Auth from './components/Auth.vue'
 import Player from './components/Player.vue'
-import Artistes from './components/Artistes.vue'
-import Intro from './components/Intro.vue'
+
 import { mapWritableState } from 'pinia'
 import { useUserStore } from '@/stores/user'
 import { auth } from './plugins/firebase/firebase'
@@ -27,9 +20,7 @@ export default {
   components: {
     AppHeader,
     Auth,
-    Player,
-    Artistes,
-    Intro
+    Player
   },
   computed: {
     ...mapWritableState(useUserStore, ['userLoggedIn'])

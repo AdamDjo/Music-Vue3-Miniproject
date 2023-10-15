@@ -3,7 +3,7 @@
   <section class="container mx-auto mt-6">
     <div class="md:grid md:grid-cols-3 md:gap-4">
       <div class="col-span-1">
-        <Upload></Upload>
+        <Upload :addSong="addSong"></Upload>
       </div>
       <div class="col-span-2">
         <div class="bg-white rounded border border-gray-200 relative flex flex-col">
@@ -18,6 +18,7 @@
               :key="song.docId"
               :song="song"
               :updateSong="updateSong"
+              :updatedUnsavedFlag="updatedUnsavedFlag"
               :removeSong="removeSong"
               :index="i"
             ></CompositionItem>
@@ -36,23 +37,37 @@ export default {
   name: 'manage',
   async created() {
     const snapshot = await songsCollection.where('uid', '==', auth.currentUser.uid).get()
-    snapshot.forEach((document) => {
-      const song = { ...document.data(), docId: document.id }
-      this.songs.push(song)
-    })
+    snapshot.forEach(this.addSong)
   },
   data() {
     return {
-      songs: []
+      songs: [],
+      unsavedFlag: false
     }
   },
   methods: {
+    addSong(document) {
+      const song = { ...document.data(), docId: document.id }
+      this.songs.push(song)
+    },
     updateSong(i, values) {
       this.songs[i].modified_name = values.modified_name
       this.songs[i].genre = values.genre
     },
     removeSong(i) {
       this.songs.splice(i, 1)
+    },
+    updatedUnsavedFlag(value) {
+      this.unsavedFlag = value
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    // ...
+    if (!this.unsavedFlag) {
+      next()
+    } else {
+      const leave = confirm('You have unsaved changes. are you sure you want to leave?')
+      next(leave)
     }
   },
   beforeRouteEnter(to, from, next) {

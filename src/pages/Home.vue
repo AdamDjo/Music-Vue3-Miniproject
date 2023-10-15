@@ -27,7 +27,9 @@ export default {
   components: { Intro, Artistes },
   data() {
     return {
-      songs: []
+      songs: [],
+      maxPerPage: 3,
+      pendingRequest: false
     }
   },
   async created() {
@@ -44,17 +46,33 @@ export default {
       const bottomOfWindow = Math.round(scrollTop) + innerHeight === offsetHeight
       console.log(Math.round(scrollTop))
       if (bottomOfWindow) {
-        console.log('we are on bottom')
+        this.getSongs()
       }
     },
     async getSongs() {
-      const snapshots = await songsCollection.get()
+      let snapshots
+      if (this.pendingRequest) {
+        return
+      }
+      this.pendingRequest = true
+
+      if (this.songs.length) {
+        const lastDoc = await songsCollection.doc(this.songs[this.songs.length - 1].docId).get()
+        snapshots = await songsCollection
+          .orderBy('modified_name')
+          .startAfter(lastDoc)
+          .limit(this.maxPerPage)
+          .get()
+      } else {
+        snapshots = await songsCollection.orderBy('modified_name').limit(this.maxPerPage).get()
+      }
       snapshots.forEach((document) => {
         this.songs.push({
           DocId: document.id,
           ...document.data()
         })
       })
+      this.pendingRequest = false
     }
   }
 }

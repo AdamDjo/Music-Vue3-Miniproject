@@ -44,35 +44,44 @@ export default {
       const { scrollTop, offsetHeight } = document.documentElement
       const { innerHeight } = window
       const bottomOfWindow = Math.round(scrollTop) + innerHeight === offsetHeight
-      console.log(Math.round(scrollTop))
+
       if (bottomOfWindow) {
         this.getSongs()
       }
     },
     async getSongs() {
-      let snapshots
       if (this.pendingRequest) {
         return
       }
       this.pendingRequest = true
 
-      if (this.songs.length) {
-        const lastDoc = await songsCollection.doc(this.songs[this.songs.length - 1].docId).get()
-        snapshots = await songsCollection
-          .orderBy('modified_name')
-          .startAfter(lastDoc)
-          .limit(this.maxPerPage)
-          .get()
-      } else {
-        snapshots = await songsCollection.orderBy('modified_name').limit(this.maxPerPage).get()
-      }
-      snapshots.forEach((document) => {
-        this.songs.push({
-          DocId: document.id,
-          ...document.data()
+      try {
+        let snapshots
+
+        let query = songsCollection.orderBy('modified_name')
+
+        if (this.songs.length > 0) {
+          const lastSong = this.songs[this.songs.length - 1]
+          const lastDoc = await songsCollection.doc(lastSong.DocId).get()
+
+          if (lastDoc.exists) {
+            query = query.startAfter(lastDoc)
+          }
+        }
+
+        snapshots = await query.limit(this.maxPerPage).get()
+
+        snapshots.forEach((document) => {
+          this.songs.push({
+            DocId: document.id,
+            ...document.data()
+          })
         })
-      })
-      this.pendingRequest = false
+      } catch (error) {
+        console.error('Error fetching songs:', error)
+      } finally {
+        this.pendingRequest = false
+      }
     }
   }
 }

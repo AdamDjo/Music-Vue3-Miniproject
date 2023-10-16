@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/pages/Home.vue'
 import About from '@/pages/About.vue'
 import Manage from '@/pages/Manage.vue'
+import Song from '@/pages/Song.vue'
 const routes = [
   {
     path: '/',
@@ -27,6 +28,11 @@ const routes = [
   {
     path: '/manage',
     redirect: { name: 'manage' }
+  },
+  {
+    path: '/song/:id',
+    name: 'song',
+    component: Song
   },
   {
     path: '/:catchAll(.*)*',

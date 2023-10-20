@@ -10,8 +10,9 @@
       <button
         type="button"
         class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
+        @click.prevent="newSong(song)"
       >
-        <i class="fas fa-play"></i>
+        <i class="fas" :class="{ 'fa-play': !playing, 'fa-stop': playing }"></i>
       </button>
       <div class="z-50 text-left ml-8">
         <!-- Song Info -->
@@ -21,7 +22,7 @@
     </div>
   </section>
   <!-- Form -->
-  <section class="container mx-auto mt-6">
+  <section class="container mx-auto mt-6" id="comments">
     <div class="bg-white rounded border border-gray-200 relative flex flex-col">
       <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
         <!-- Comment Count -->
@@ -85,11 +86,16 @@
 <script>
 import { songsCollection, auth, commentsCollection } from '../plugins/firebase/firebase'
 import { ErrorMessage } from 'vee-validate'
-import { mapState } from 'pinia'
+import { mapState, mapActions } from 'pinia'
 import { useUserStore } from '../stores/user'
+import usePlayerStore from '../stores/player'
 
 export default {
   name: 'Song',
+  setup() {
+    const userStore = useUserStore()
+    return { userLoggedIn: userStore.userLoggedIn }
+  },
   data() {
     return {
       song: {},
@@ -105,7 +111,6 @@ export default {
     }
   },
   computed: {
-    ...mapState(useUserStore, ['userLoggedIn']),
     sortedComments() {
       return this.comments.slice().sort((a, b) => {
         if (this.sort === '1') {
@@ -126,6 +131,8 @@ export default {
     this.getComments()
   },
   methods: {
+    ...mapActions(usePlayerStore, ['newSong', 'toggleAudio']),
+
     async addComment(values, { resetForm }) {
       this.comment_in_submission = true
       this.comment_show_alert = true
@@ -161,6 +168,9 @@ export default {
         })
       })
     }
+  },
+  computed: {
+    ...mapState(usePlayerStore, ['playing'])
   }
 }
 </script>

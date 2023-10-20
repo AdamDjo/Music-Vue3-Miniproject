@@ -1,1 +1,1 @@
-<template>this about page page</template>
+<template><main>this about page page</main></template>

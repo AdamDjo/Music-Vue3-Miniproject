@@ -1,0 +1,16 @@
+{
+  "home": {
+    "listen": "Ecoutez de la bonne musique!"
+  },
+  "song": {
+    "comment_count": "Pas de commentaires | 1 commentaire | {count} commentaires",
+    "songTitle": "Mes chansons"
+  },
+  "menu": {
+    "About": "A propos",
+    "Manage": "Gestion de musique",
+    "Logout": "Se déconnecter",
+    "Login": "Se connecter",
+    "Register": "S'enregister"
+  }
+}

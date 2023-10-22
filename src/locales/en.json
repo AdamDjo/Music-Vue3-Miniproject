@@ -1,0 +1,16 @@
+{
+  "home": {
+    "listen": "Listen to Great Music!"
+  },
+  "song": {
+    "comment_count": "No comments | 1 comment | {count} comments",
+    "songTitle": "Songs"
+  },
+  "menu": {
+    "About": "About",
+    "Manage": "Manage",
+    "Logout": "Logout",
+    "Login": "Login",
+    "Register": "Register"
+  }
+}

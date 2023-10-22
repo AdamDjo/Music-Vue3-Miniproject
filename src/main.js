@@ -8,6 +8,7 @@ import Veevalidate from './plugins/vee-validate/validation'
 import { auth } from './plugins/firebase/firebase'
 import i18n from './plugins/i18n/i18n'
 import { registerSW } from 'virtual:pwa-register'
+import GlobalComponents from './plugins/global/_globals'
 registerSW({ immediate: true })
 let app
 auth.onAuthStateChanged(() => {
@@ -18,6 +19,7 @@ auth.onAuthStateChanged(() => {
     app.use(router)
     app.use(Veevalidate)
     app.use(i18n)
+    app.use(GlobalComponents)
     app.mount('#app')
   }
 })

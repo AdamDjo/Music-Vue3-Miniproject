@@ -124,15 +124,16 @@ export default {
       })
     }
   },
-  async created() {
-    const docSnapshot = await songsCollection.doc(this.$route.params.id).get()
-
-    if (!docSnapshot.exists) {
-      this.$router.push({ name: 'home' })
-      return
-    }
-    this.song = docSnapshot.data()
-    this.getComments()
+  async beforeRouteEnter(to, from, next) {
+    const docSnapshot = await songsCollection.doc(to.params.id).get()
+    next((vm) => {
+      if (!docSnapshot.exists) {
+        vm.$router.push({ name: 'home' })
+        return
+      }
+      vm.song = docSnapshot.data()
+      vm.getComments()
+    })
   },
   methods: {
     ...mapActions(usePlayerStore, ['newSong', 'toggleAudio']),

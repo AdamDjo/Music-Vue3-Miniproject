@@ -7,6 +7,8 @@ import router from './router'
 import Veevalidate from './plugins/vee-validate/validation'
 import { auth } from './plugins/firebase/firebase'
 import i18n from './plugins/i18n/i18n'
+import { registerSW } from 'virtual:pwa-register'
+registerSW({ immediate: true })
 let app
 auth.onAuthStateChanged(() => {
   if (!app) {

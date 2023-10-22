@@ -18,6 +18,7 @@
     "howler": "^2.2.4",
     "pinia": "^2.1.4",
     "vee-validate": "^4.10.5",
+    "vite-plugin-pwa": "^0.16.5",
     "vue": "^3.3.2",
     "vue-i18n": "^9.5.0",
     "vue-router": "^4.2.0"
